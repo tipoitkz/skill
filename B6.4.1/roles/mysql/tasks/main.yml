@@ -1,0 +1,42 @@
+- name: Install mysql
+  yum:
+    name: "mysql-server"
+    state: latest
+
+- name: Start mysql 
+  service:
+    name: "mysqld"
+    state: started 
+    enabled: true
+    
+- name: Create a new database with name 'bobdata'
+  community.mysql.mysql_db:
+    name: bobdata
+    state: present
+    login_user: root
+    login_password: admin1090++
+
+- name: Add firewall rules
+  iptables:
+    chain: INPUT
+    destination_port: "{{ item }}"
+    protocol: tcp
+    jump: ACCEPT
+  with_items:
+    - "{{ firewall_ports }}"
+
+
+# - name: Populate service facts
+#   ansible.builtin.service_facts:
+
+# - debug:
+#     msg: MySql isn't isntalled
+#   when: "'mariadb' not in services"
+
+# - name: Start mysql if it's installed
+#   service:
+#     name: mariadb
+#     state: started 
+#     enabled: true
+#   when: "'mariadb' in services"
+  

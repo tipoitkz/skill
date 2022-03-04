@@ -1,0 +1,13 @@
+- hosts: localhost
+  become: true
+
+  tasks:
+    - name: Docker
+      include_role:
+        name: docker
+
+    - name: MySql (Start only)
+      include_role:
+        name: mysql
+
+

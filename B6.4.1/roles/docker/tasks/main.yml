@@ -1,0 +1,11 @@
+- name: Install docker
+  yum:
+    name: docker
+    state: latest
+
+- name: Start Docker 
+  service:
+    name: podman
+    state: started 
+    enabled: true
+    

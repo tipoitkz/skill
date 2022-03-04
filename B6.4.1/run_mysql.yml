@@ -1,0 +1,10 @@
+- hosts: localhost
+  become: true
+
+  tasks:
+
+    - name: MySql (Start only)
+      include_role:
+        name: mysql
+
+
