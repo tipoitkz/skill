@@ -1,0 +1,8 @@
+user=dnsmasq
+group=dnsmasq
+conf-dir=/etc/dnsmasq.d,.rpmnew,.rpmsave,.rpmorig
+listen-address=::1,127.0.0.1,{{ ansible_all_ipv4_addresses[0] }}
+
+# Google's nameservers
+server=8.8.8.8
+server=8.8.4.4

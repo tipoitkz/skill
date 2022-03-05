@@ -1,0 +1,12 @@
+- name: Run all
+  become: yes
+  hosts: localhost
+  tasks:
+
+  - name: Dns
+    include_role:
+      name: dns
+
+  - name: Nginx
+    include_role:
+      name: nginx

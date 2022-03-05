@@ -1,0 +1,57 @@
+---
+# tasks file for nginx
+- name: Install nginx
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - "nginx"
+    - "php-fpm"
+
+- name: Start nginx   
+  service:
+    name: nginx
+    state: started
+    # enabled: yes
+  notify: Firewall conf    
+
+- name: Configure php-fpm
+  replace:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "{{ item.1 }}"
+    replace: "{{ item.2 }}"
+    backup: yes
+  with_items:
+    - { 1: '^user\s\=\sapache$', 2: 'user = nginx' }
+    - { 1: '^group\s\=\sapache$', 2: 'group = nginx' }
+
+- name: Start php-fpm   
+  service:
+    name: php-fpm
+    state: started
+    # enabled: yes
+
+- name: Create info.php
+  template:
+    src: info.php.j2
+    dest: /usr/share/nginx/html/info.php
+  notify: restart nginx
+
+- name: Странное задание
+  block:
+    
+    - name: Create directory /opt/nginx/ansible
+      file:
+        path: /opt/nginx/ansible
+        state: directory  
+        recurse: true
+    
+    - name: Configure DocumentRoot (Nginx)
+      replace:
+        path: /etc/nginx/nginx.conf
+        regexp: "{{ item.1 }}"
+        replace: "{{ item.2 }}"
+        backup: yes
+      with_items:
+        - { 1: '^\s+root\s+\/usr\/share\/nginx\/html;', 2: 'root        /opt/nginx/ansible;' }
+      notify: restart nginx

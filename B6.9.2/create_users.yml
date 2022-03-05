@@ -1,0 +1,26 @@
+- name: Create users playbook
+  become: yes
+  hosts: localhost
+  tasks:
+
+    - name: Create group
+      group:
+        name: superusers
+        state: present
+
+    - name: Create users   
+      user:
+        name: "{{ item }}"
+        state: present
+        group: superusers
+      with_items:
+        - "user2"
+        - "user3"
+
+    - name: Validate the sudoers file before saving
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%superusers ALL='
+        line: '%superusers ALL=(ALL) NOPASSWD: ALL'
+        validate: /usr/sbin/visudo -cf %s    

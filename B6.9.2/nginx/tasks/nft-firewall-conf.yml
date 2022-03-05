@@ -1,0 +1,7 @@
+- shell: |
+    nft add rule ip filter INPUT tcp dport { 80, 443 } counter accept
+
+- name: Restart nftables
+  systemd:
+    name: nftables
+    state: restarted

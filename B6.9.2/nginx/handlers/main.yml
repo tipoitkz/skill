@@ -1,0 +1,7 @@
+- name: restart nginx
+  include_tasks: tasks/restart_nginx.yml
+
+- name: Firewall conf
+  include_tasks: tasks/nft-firewall-conf.yml
+  
+
