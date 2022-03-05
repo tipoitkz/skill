@@ -1,3 +1,4 @@
+#ansible-playbook user_create.yml --ask-pass -i inventory/static.yml --ask-vault-pass
 - name: User create playbook
   hosts: all
   become: yes

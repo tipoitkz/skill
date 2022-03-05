@@ -1,0 +1,17 @@
+#ansible-playbook postfix.yml --ask-pass --tags init postfix
+- name: Postfix playbook
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Install postfix
+      yum:
+        name: postfix
+        state: installed
+      tags: "init postfix"    
+
+    - name: Drop postfix
+      yum:
+        name: postfix
+        state: absent
+      tags: "drop postfix"    
