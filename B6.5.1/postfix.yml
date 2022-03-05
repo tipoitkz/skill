@@ -1,4 +1,4 @@
-#ansible-playbook postfix.yml --ask-pass --tags init postfix
+#ansible-playbook postfix.yml --ask-pass -i inventory/static.yml --tags init postfix
 - name: Postfix playbook
   hosts: all
   become: yes
