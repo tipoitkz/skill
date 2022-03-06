@@ -1,0 +1,19 @@
+- name: Workshop
+  hosts: localhost
+  become: yes
+  vars:
+    php_listen: "127.0.0.1:9000"
+
+  tasks:
+
+    - name: Users
+      include_role:
+        name: users
+
+    - name: Php
+      include_role:
+        name: php
+
+    - name: Nginx
+      include_role:
+        name: http

@@ -1,0 +1,5 @@
+---
+# vars file for users
+users:
+  - user1
+  - user2

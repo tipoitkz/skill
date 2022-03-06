@@ -1,0 +1,11 @@
+---
+# tasks file for users
+- name: Create users
+  user:
+    name: "{{ item }}"
+    state: present
+    generate_ssh_key: yes
+    ssh_key_comment: "ssh key"
+    ssh_key_bits: 2048
+  with_items:
+    - "{{ users }}"  

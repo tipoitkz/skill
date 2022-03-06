@@ -1,0 +1,30 @@
+---
+# tasks file for php
+- name: Install php-fpm
+  yum:
+    name: php-fpm
+    state: installed
+
+- name: Start php-fpm   
+  service:
+    name: php-fpm
+    state: started
+    # enabled: yes
+
+- name: Configure php-fpm
+  replace:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "{{ item.1 }}"
+    replace: "{{ item.2 }}"
+    backup: yes
+  with_items:
+    - { 1: '^user\s\=\sapache$', 2: 'user = nginx' }
+    - { 1: '^group\s\=\sapache$', 2: 'group = nginx' }
+
+- name: Add listen port
+  lineinfile:
+    path: /etc/php-fpm.d/www.conf
+    line: |
+        listen = {{ php_listen }}
+    insertafter: "[www]"    
+  notify: Restart php-fpm
