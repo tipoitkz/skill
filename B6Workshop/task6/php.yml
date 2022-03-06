@@ -1,0 +1,8 @@
+- name: Workshop
+  hosts: php
+  become: yes
+  tasks:
+
+    - name: Php
+      include_role:
+        name: php

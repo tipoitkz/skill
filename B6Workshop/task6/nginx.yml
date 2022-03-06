@@ -1,0 +1,8 @@
+- name: Workshop
+  hosts: web
+  become: yes
+  tasks:
+
+    - name: Nginx
+      include_role:
+        name: http

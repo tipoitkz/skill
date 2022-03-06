@@ -1,0 +1,4 @@
+---
+# handlers file for http
+- name: restart nginx
+  include_tasks: tasks/restart_nginx.yml

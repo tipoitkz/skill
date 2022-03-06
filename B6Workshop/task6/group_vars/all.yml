@@ -1,0 +1,2 @@
+php_listen_ip: "172.17.142.118"
+php_listen_port: "9000"

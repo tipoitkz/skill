@@ -1,0 +1,39 @@
+---
+# tasks file for php
+- name: Install php-fpm
+  yum:
+    name: php-fpm
+    state: installed
+
+- name: Start php-fpm   
+  service:
+    name: php-fpm
+    state: started
+    # enabled: yes
+
+- name: Configure php-fpm
+  replace:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "{{ item.1 }}"
+    replace: "{{ item.2 }}"
+    backup: yes
+  with_items:
+    - { 1: '^user\s\=\sapache$', 2: 'user = nginx' }
+    - { 1: '^group\s\=\sapache$', 2: 'group = nginx' }
+    - { 1: '^listen\.allowed\_clients\s\=\s127\.0\.0\.1$', 2: 'listen.allowed_clients = any' }
+
+- name: Add listen port
+  blockinfile:
+    marker: "; {mark} -- Liste port"
+    path: /etc/php-fpm.d/www.conf
+    block: |
+        listen = {{ php_listen_port }}
+    insertafter: "[www]"    
+  notify: Restart php-fpm
+
+- name: Add firewall rules
+  firewalld:
+    port: "9000/tcp"
+    permanent: yes
+    state: enabled
+    immediate: yes
