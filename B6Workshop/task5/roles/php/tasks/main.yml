@@ -22,9 +22,10 @@
     - { 1: '^group\s\=\sapache$', 2: 'group = nginx' }
 
 - name: Add listen port
-  lineinfile:
+  blockinfile:
+    marker: "; {mark} -- Liste port"
     path: /etc/php-fpm.d/www.conf
-    line: |
+    block: |
         listen = {{ php_listen }}
     insertafter: "[www]"    
   notify: Restart php-fpm
