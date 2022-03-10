@@ -1,0 +1,8 @@
+- name: App playbook
+  hosts: app
+  become: yes
+  tasks:
+
+    - name: Docker
+      include_role: 
+        name: docker

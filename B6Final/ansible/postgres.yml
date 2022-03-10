@@ -1,0 +1,8 @@
+- name: Database playbook
+  hosts: database
+  become: yes
+  tasks:
+
+    - name: Postgres
+      include_role: 
+        name: postgresql

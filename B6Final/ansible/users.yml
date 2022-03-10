@@ -1,0 +1,23 @@
+- name: Users playbook
+  hosts: ansible
+  become: yes
+  tasks:
+
+    - name: Users
+      include_role: 
+        name: local_user_only
+        apply:
+          tags: "local-user"  
+      tags: "local-user"  
+
+- name: Users playbook
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Users
+      include_role: 
+        name: user_create
+        apply:
+          tags: "remote-user"
+      tags: "remote-user"  

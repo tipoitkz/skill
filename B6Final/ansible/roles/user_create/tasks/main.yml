@@ -1,0 +1,30 @@
+---
+# tasks file for user_create
+- block:
+
+    - name: Create user {{ ans_user }} 
+      user:
+        name: "{{ ans_user }}"
+        state: present
+        groups: wheel  
+      when: ansible_os_family=="RedHat"
+
+    - name: Create user {{ ans_user }} 
+      user:
+        name: "{{ ans_user }}"
+        state: present
+        groups: sudo 
+      when: ansible_os_family=="Debian"
+
+    - name: Distribute authorized key to all nodes
+      authorized_key:
+        user: "{{ ans_user }}"
+        state: present
+        key: "{{ pub_cert }}"
+
+    - name: Disable password confirmation for {{ ans_user }}
+      template:
+        src: templates/{{ ans_user }}.j2
+        dest: /etc/sudoers.d/{{ ans_user }}
+        validate: /usr/sbin/visudo -cf %s    
+  

@@ -1,0 +1,29 @@
+- name: Local User block
+  tags: "local-user"  
+  block:
+
+    - name: Create user ansible 
+      user:
+        name: "{{ ans_user }}"
+        state: present
+        generate_ssh_key: yes
+        ssh_key_comment: "ssh key"
+        ssh_key_bits: 2048    
+        groups: wheel
+      when: ansible_os_family=="RedHat"
+
+    - name: Create user ansible 
+      user:
+        name: "{{ ans_user }}"
+        state: present
+        generate_ssh_key: yes
+        ssh_key_comment: "ssh key"
+        ssh_key_bits: 2048    
+        groups: sudo 
+      when: ansible_os_family=="Debian"
+
+    - name: Disable password confirmation for ansible
+      template:
+        src: templates/{{ ans_user }}.j2
+        dest: /etc/sudoers.d/{{ ans_user }}
+        validate: /usr/sbin/visudo -cf %s   

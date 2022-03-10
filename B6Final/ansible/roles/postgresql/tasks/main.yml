@@ -1,0 +1,52 @@
+- name: Postgresql block
+  block:
+
+    - debug:
+        msg: "Install Postgresql{{ pg_version }}"
+
+    - name: Install required packages
+      apt:
+       name:
+        - wget
+        - python3-psycopg2
+       state: present    
+
+    - name: Create repo list
+      template:
+        src: pgdg.list.j2
+        dest: /etc/apt/sources.list.d/pgdg.list
+
+    - name: Gpg key
+      shell: |
+        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+      args:
+        warn: no
+
+    - name: Install postgresql {{ pg_version }}
+      apt:
+        name:
+        - postgresql-{{ pg_version }}
+        state: present
+        update_cache: yes
+
+    - name: Configure postgres 
+      replace:
+        path: /etc/postgresql/14/main/postgresql.conf
+        regexp: '^data\_directory\s\=.*$'
+        replace: "data_directory = '{{ pg_directory }}'"
+        backup: yes 
+      
+    - name: Create data directory
+      file:
+        path: "{{ pg_directory }}"
+        state: directory
+        owner: postgres
+        group: postgres
+
+    - name: Start postgresql-{{ pg_version }}
+      service:
+       name: postgresql
+       state: started
+       # enabled: yes    
+
+  when: ansible_os_family=="Debian"

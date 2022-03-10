@@ -1,0 +1,18 @@
+all:
+  children:
+    ansible:
+      hosts:
+        192.168.10.17:
+    app:
+      hosts:
+        192.168.10.33:
+        192.168.10.3:
+    database:
+      hosts:
+        192.168.10.17:   
+          pg_version: 14
+          pg_directory: "/var/lib/postgresql/14/pg_data"
+    web:
+      hosts:
+        192.168.10.17:    
+ 
