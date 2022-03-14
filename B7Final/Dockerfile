@@ -5,7 +5,6 @@ WORKDIR /srv/app/
 COPY requirements.txt ./
 
 RUN \
- update-ca-certificates && \
  apk add --no-cache postgresql-libs && \
  apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
  python3 -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r requirements.txt --no-cache-dir && \
