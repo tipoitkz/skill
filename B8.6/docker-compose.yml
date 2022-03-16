@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+
+  php:
+    build: .
+    networks:
+      - some-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS http://nginx | grep works > /dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  nginx:  
+    image: nginx:stable
+    ports:
+      - 80:80
+    volumes:
+      - /home/admin/skill/B8.6/devops_module10_compose/www:/var/www
+      - /home/admin/skill/B8.6/devops_module10_compose/nginx:/etc/nginx/conf.d
+      - /home/admin/skill/B8.6/devops_module10_compose/logs:/var/log/nginx
+    networks:
+      - some-net
+
+networks:
+  some-net:
+    driver: bridge
